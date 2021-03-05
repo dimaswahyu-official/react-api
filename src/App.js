@@ -1,24 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
+import React, {useEffect, useState} from "react";
+import axios from "axios";
+const gitHubUrl = "https://api.github.com/users/deekshasharma";
 
 function App() {
+
+  const [userData,setUserData] = useState({});
+
+  useEffect(() => {
+    // getGitHubUserWithFetch();
+    getGiHubUserWithAxios()
+  },[]);
+
+  const getGitHubUserWithFetch = async () => {
+    const response = await fetch(gitHubUrl);
+    const jsonData = await response.json();
+    setUserData(jsonData);
+
+  };
+
+  const getGiHubUserWithAxios = async () => {
+    const response = await axios.get(gitHubUrl);
+    setUserData(response.data);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="App">
+        <header className="App-header">
+          <h2>GitHub User Data</h2>
+        </header>
+        <div className="user-container">
+          <h5 className="info-item">{userData.name}</h5>
+          <h5 className="info-item">{userData.location}</h5>
+          <h5 className="info-item">{userData.blog}</h5>
+          <h5 className="info-item">{userData.company}</h5>
+        </div>
+      </div>
   );
 }
 
